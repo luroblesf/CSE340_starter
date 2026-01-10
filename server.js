@@ -9,12 +9,19 @@ const express = require("express")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
+const expressLayouts = require("express-ejs-layouts")
+
 /* ***********************
  * View Engine and Views
  *************************/
 app.set("view engine", "ejs")
 app.set("views", "./views")
 
+/* ***********************
+ * View Layouts
+ *************************/
+app.use(expressLayouts)
+app.set("layout", "layouts/layout")
 
 /* ***********************
  * Routes

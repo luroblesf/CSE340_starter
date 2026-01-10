@@ -9,9 +9,17 @@ body {
   margin: 0;
   padding: 0;
   background-image: url("../images/site/small_check.jpg");
-  background-repeat: repeat;
   background-size: cover;
   background-position: center;
+  border-radius: 1%;
+}
+.container {
+  background-color: white;
+  margin: 20px;
+  padding: 20px;
+  min-height: 100vh;
+  border: 6px solid #4c96d7;
+  border-radius: 1%;
 }
 
 /********** Header Styles **********/
@@ -21,6 +29,7 @@ header {
   padding: 20px 10px;
   text-align: left;
   font-family: 'Arial', sans-serif;
+  background-color: white;
 }
 
 header h1 {
@@ -45,12 +54,8 @@ nav ul {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   justify-content: center;
-  padding: 10px 0;
-  margin: 0.5px 0;
-}
-
-nav ul li {
-  margin: 0 15px;
+  padding: 10px 50px;
+  margin: 0 50px;
 }
 
 nav ul li a {
@@ -65,12 +70,12 @@ nav ul li a:hover {
 
 /********** Index Section **********/
 main {
-  margin: 100px;
-  padding: 20px;
   background-color: white;
-  border: #4c96d7 solid 6px;
-  border-radius: 2%;
+  padding: 50px;
+  margin: 0 5px;
 }
+
+/********** Hero Section **********/
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -164,8 +169,9 @@ main {
 
 /********** Footer Styles **********/
 footer {
+  background-color: white;
   text-align: left;
-  padding-top: 50px;
+  padding-top: 3px;
   font-size: 0.9rem;
   font-family: Arial, Helvetica, sans-serif;
 }
