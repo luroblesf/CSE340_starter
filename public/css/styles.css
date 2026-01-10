@@ -4,3 +4,233 @@
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url("../images/site/small_check.jpg");
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/********** Header Styles **********/
+header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 20px 10px;
+  text-align: left;
+  font-family: 'Arial', sans-serif;
+}
+
+header h1 {
+  margin: 0;
+  color: black;
+  background-color: white;
+}
+
+header a {
+  text-decoration: none;
+  color: #333;
+  padding-top: 8px;
+}
+/********** Navigation Styles **********/
+nav {
+  background-color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+nav ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  justify-content: center;
+  padding: 10px 0;
+  margin: 0.5px 0;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10% 40%;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/********** Index Section **********/
+main {
+  margin: 100px;
+  padding: 20px;
+  background-color: white;
+  border: #4c96d7 solid 6px;
+  border-radius: 2%;
+}
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 100vh * 0.3);
+  padding-left: 0.5rem;
+  background-image: url("../images/vehicles/delorean.jpg");
+  background-size: 760px auto;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+
+.hero img {
+  width: 50%;
+  justify-self: left;
+  padding-left: 5%;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  padding-top: 1rem;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.hero-grid {
+  display: block;
+  width: 65%;
+  padding: 0.3rem;
+  background-color: rgb(255 255 255 / 50%);
+}
+
+.hero h2 {
+  font-size: 2rem;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: left;
+  color: #4c96d7;
+  grid-column: 1 / 3;
+  padding-left: 5%;
+}
+
+.hero ul {
+  font-size: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+  color: #4c96d7;
+  list-style: none;
+  grid-column: 1 / 3;
+  padding-left: 5%;
+}
+
+/********** Info Styles **********/
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.upgrade-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.item {
+  background-color: #4c96d7;
+  border: 0.5px solid black;
+  padding: 5px 70px 5px 80px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.upgrade-item a {
+  font-size: 1rem;
+  color: blue;
+  padding: 0 0 10px 65px;
+  margin-top: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.reviews {
+  grid-column: 1 / 3;
+  text-align: left;
+}
+
+.reviews li {
+  font-size: 1rem;
+  line-height: 2.7;
+  font-family: Arial, Helvetica, sans-serif
+}
+
+/********** Footer Styles **********/
+footer {
+  text-align: left;
+  padding-top: 50px;
+  font-size: 0.9rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/********** Responsive Mobile Styles **********/
+@media screen and (max-width: 600px) {
+  body {
+      background-image: none;
+  }
+
+  main {
+    margin: 10px;
+    padding: 10px;
+    background-color: white;
+    border: none;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    height: 55vh;
+    background-size: cover;
+    background-position: center top;
+  }
+
+  .hero img {
+    width: 55%;
+    justify-self: left;
+    padding-left: 0.2rem;
+  }
+
+  .hero h1 {
+    font-size: 0.5rem;
+    padding-top: 0.52rem;
+    text-align: center;
+  }
+
+  .hero-grid {
+    background-color: rgb(255 255 255 / 70%);
+    margin: auto 1% 30% 1%;
+    width: 35%;
+  }
+
+  .hero h2,
+  .hero ul {
+    text-align: left;
+    padding-left: 0;
+    font-size: 1.3rem;
+  }
+
+  .info {
+    grid-template-columns: 1fr;
+  }
+
+  .upgrade-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 5px;
+    padding: 5px;
+    justify-items: center;
+  }
+
+  footer {
+    text-align: left;
+    padding-top: 20px;
+    font-size: 0.8rem;
+  }
+}
