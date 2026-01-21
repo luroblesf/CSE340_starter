@@ -36,6 +36,6 @@ SELECT inv_make,
 FROM inventory
 WHERE classification_id = '2';
 -- Update inv_image and inv_thumbnail paths to include 'vehicles' subdirectory
-UPDATE "inventory"
+UPDATE "inventorie"
 SET inv_image = REPLACE (inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE (inv_thumbnail, '/images/', '/images/vehicles/');
