@@ -16,12 +16,14 @@ const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const errorRoutes = require('./routes/errorRoutes')
 const errorHandler = require('./middleware/errorHandler')
+const path = require("path");
+
 
 /* ***********************
  * View Engine and Views
  *************************/
 app.set("view engine", "ejs")
-app.set("views", "./views")
+app.set("views", path.join(__dirname, "views"));
 
 /* ***********************
  * View Layouts
