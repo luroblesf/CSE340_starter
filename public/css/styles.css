@@ -52,9 +52,9 @@ nav {
 nav ul {
   list-style: none;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   justify-content: center;
-  padding: 10px 50px;
+  padding: 10px 20px;
   margin: 0 50px;
 }
 
@@ -175,6 +175,92 @@ footer {
   font-size: 0.9rem;
   font-family: Arial, Helvetica, sans-serif;
 }
+ /********** Vehicle Details Styles **********/
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.vehicle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  text-align: center;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #cccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.vehicle-price {
+  color: black;
+  font-size: 16px;
+}
+
+.vehicle-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: #000000 2px solid;
+}
+
+/********** Vehicle Detail **********/
+.vehicle-detail {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+   grid-template-areas:
+    "title title"
+    "image text";
+  gap: 50px;
+  margin: 50px;
+}
+
+.vehicle-detail h1 {
+  grid-area: title;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+.vehicle-detail h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #000000;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.vehicle-img {
+  grid-area: image;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-detail-text {
+  grid-area: text;
+}
+
+.vehicle-detail p {
+  font-size: 1rem;
+  color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 /********** Responsive Mobile Styles **********/
 @media screen and (max-width: 600px) {
@@ -234,9 +320,54 @@ footer {
     justify-items: center;
   }
 
+  nav ul {
+      margin: 0 10px;
+      gap: 15px;
+  }
+
   footer {
     text-align: left;
     padding-top: 20px;
     font-size: 0.8rem;
   }
-}
+  
+  .vehicle-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .vehicle-card {
+    margin: 0 auto;
+    width: 95%;
+  }
+
+  .vehicle-img {
+    height: auto;
+  }
+
+  .vehicle-info {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .vehicle-detail {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "title"
+        "image"
+        "text";
+      gap: 20px;
+      margin: 0 auto;
+      max-width: 600px;
+      padding: 20px;
+  }
+
+  .vehicle-detail h1 {
+    font-size: 1.5rem;
+  }
+  .vehicle-detail h2 {
+    font-size: 1.2rem;
+  }
+ }
