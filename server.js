@@ -9,13 +9,12 @@
 const express = require("express");
 const env = require("dotenv").config();
 const app = express();
-const static = require("./routes/static");
 const expressLayouts = require("express-ejs-layouts");
 const utilities = require("./utilities");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
-const errorRoutes = require('./routes/errorRoutes');
-const errorHandler = require('./middleware/errorHandler');
+const errorRoutes = require("./routes/errorRoutes");
+const errorHandler = require("./middleware/errorHandler");
 const path = require("path");
 
 /* ***********************
@@ -31,10 +30,13 @@ app.use(expressLayouts);
 app.set("layout", "layouts/layout");
 
 /* ***********************
+ * Static Files
+ *************************/
+app.use(express.static(path.join(__dirname, "public")));
+
+/* ***********************
  * Routes
  *************************/
-app.use(static);
-
 // Inventory routes
 app.use("/inventory", inventoryRoute);
 
@@ -42,27 +44,27 @@ app.use("/inventory", inventoryRoute);
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
 // Error Routes (intencional 500)
-app.use('/', errorRoutes);
+app.use("/error", errorRoutes);
 
 // File Not Found Route - must be last route in list
 app.use((req, res, next) => {
-  next({ status: 404, message: 'Sorry, we appear to have lost that page.' });
+  next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
 /* ***********************
  * Express Error Handler
- * Place after all other middleware
  *************************/
 app.use(errorHandler);
 
 /* ***********************
  * Server Information
  *************************/
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
+const host = process.env.HOST;
 
 /* ***********************
  * Log statement to confirm server operation
  *************************/
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`app listening on ${host}:${port}`);
 });
