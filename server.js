@@ -59,12 +59,12 @@ app.use(errorHandler);
 /* ***********************
  * Server Information
  *************************/
-const port = process.env.PORT;
-const host = process.env.HOST;
+const port = process.env.PORT || 5500;
+
 
 /* ***********************
  * Log statement to confirm server operation
  *************************/
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`);
+  console.log(`App listening on port ${port}`);
 });
