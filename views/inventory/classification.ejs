@@ -1,41 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>
+    <h1>
         <%= title %>
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
+    </h1>
+    <div class="vehicle-grid">
+        <% vehicles.forEach(vehicle=> { %>
+            <div class="vehicle-card">
+                <img src="<%= vehicle.inv_image %>" alt="Image of <%= vehicle.inv_make %> <%= vehicle.inv_model %>"
+                    class="vehicle-img">
 
-<body>
-    <main>
-        <h1>
-            <%= title %>
-        </h1>
-        <div class="vehicle-grid">
-            <% vehicles.forEach(vehicle=> { %>
-                <div class="vehicle-card">
-                    <img src="<%= vehicle.inv_image %>" alt="Image of <%= vehicle.inv_make %> <%= vehicle.inv_model %>"
-                        class="vehicle-img">
+                <p class="vehicle-name">
+                    <a href="/inventory/detail/<%= vehicle.inv_id %>" target="_blank" rel="noopener noreferrer">
+                        <%= vehicle.inv_make %>
+                            <%= vehicle.inv_model %>
+                    </a>
+                </p>
 
-                    <p class="vehicle-name">
-                        <a href="/inventory/detail/<%= vehicle.inv_id %>" target="_blank" rel="noopener noreferrer">
-                            <%= vehicle.inv_make %>
-                                <%= vehicle.inv_model %>
-                        </a>
-                    </p>
-
-                    <p class="vehicle-price">
-                        <%= Number(vehicle.inv_price).toLocaleString("en-US", { style: "currency" , currency: "USD" })
-                            %>
-                    </p>
-                </div>
-                <% }) %>
-        </div>
-    </main>
-</body>
-
-</html>
+                <p class="vehicle-price">
+                    <%= Number(vehicle.inv_price).toLocaleString("en-US", { style: "currency" , currency: "USD" })
+                        %>
+                </p>
+            </div>
+            <% }) %>
+    </div>

@@ -16,6 +16,33 @@ const inventoryRoute = require("./routes/inventoryRoute");
 const errorRoutes = require("./routes/errorRoutes");
 const errorHandler = require("./middleware/errorHandler");
 const path = require("path");
+const session = require("express-session");
+const pool = require("./database/database");
+const bodyParser = require("body-parser")
+
+/* ***********************
+ * Middleware
+ * ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+// Express Messages Middleware
+app.use(require('connect-flash')())
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine and Views
@@ -43,6 +70,9 @@ app.use("/inventory", inventoryRoute);
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
+//Account routes
+app.use('/account', require('./routes/accountRoute'));
+
 // Error Routes (intencional 500)
 app.use("/error", errorRoutes);
 
@@ -50,6 +80,8 @@ app.use("/error", errorRoutes);
 app.use((req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
+
+
 
 /* ***********************
  * Express Error Handler

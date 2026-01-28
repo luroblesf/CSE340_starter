@@ -41,7 +41,7 @@ function buildVehicleDetailHTML(vehicle) {
     </p>
     <p><strong>Description:</strong> ${vehicle.inv_description}</p>
     <p><strong>Color:</strong> ${vehicle.inv_color}</p>
-    <p><strong>Miles:</strong> ${vehicle.inv_miles}</p>
+    <p><strong>Miles:</strong> ${vehicle.inv_miles.toLocaleString("es-US")}</p>
   </div>
 </section>
   `;

@@ -1,0 +1,52 @@
+<h1>
+    <%= title %>
+</h1>
+
+<% if (messages && messages.length) { %>
+    <% messages.forEach(function(msg) { %>
+        <div class="flash-message">
+            <%= msg %>
+        </div>
+        <% }) %>
+            <% } %>
+
+
+                <div class="login-container">
+                    <form action="/account/login" method="POST">
+
+                        <div class="form-row">
+                            <label for="account_email">Email:</label>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="email" id="account_email" name="account_email" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="account_password">Password:</label>
+                        </div>
+
+                        <div class="form-row">
+                            <input type="password" id="account_password" name="account_password" required minlength="12"
+                                pattern="^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-\\=\\[\\]{};':\"
+                                \\\\|,.<\\/?]).{12,}$">
+                        </div>
+
+                        <div class="form-row">
+                            <p>Password must be minimum of 12 characters and include 1 capital letter, 1 number and 1
+                                special character.</p>
+                        </div>
+
+                        <div class="form-row">
+                            <button type="button" class="show-password-btn">Show Password</button>
+                        </div>
+
+                        <div class="form-row">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+
+                    <div class="signup">
+                        No account? <a href="/account/register">Sign-up</a>
+                    </div>
+                </div>
