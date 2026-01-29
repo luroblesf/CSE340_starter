@@ -1,5 +1,6 @@
 const utilities = require('../utilities')
 const accountModel = require('../models/accountModel')
+const bcrypt = require("bcryptjs")
 
 // Deliver registration view
 async function buildRegister(req, res, next) {
@@ -9,23 +10,26 @@ async function buildRegister(req, res, next) {
         nav,
         errors: null,
         messages: [].concat(req.flash('notice')), // siempre array
-        account_firstname: "",  
+        account_firstname: "",
         account_lastname: "",
         account_email: ""
     })
 }
 
 // Process registration
-async function registerAccount(req, res) {
+async function registerAccount(req, res, next) {
     let nav = await utilities.getNav()
     const { account_firstname, account_lastname, account_email, account_password } = req.body
 
     try {
+        // Hash password antes de guardar
+        const hashedPassword = await bcrypt.hash(account_password, 10)
+
         const regResult = await accountModel.registerAccount(
             account_firstname,
             account_lastname,
             account_email,
-            account_password
+            hashedPassword
         )
 
         if (regResult) {
@@ -63,4 +67,34 @@ async function registerAccount(req, res) {
     }
 }
 
-module.exports = { buildRegister, registerAccount }
+// Deliver "My Account" view
+async function buildAccount(req, res, next) {
+    try {
+        const nav = await utilities.getNav()
+        res.render("account/myaccount", {
+            title: "My Account",
+            nav,
+            errors: null,
+            messages: [].concat(req.flash("notice"))
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+// Deliver login view
+async function buildLogin(req, res, next) {
+    try {
+        const nav = await utilities.getNav()
+        res.render("account/login", {
+            title: "Login",
+            nav,
+            errors: null,
+            messages: [].concat(req.flash("notice"))
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+module.exports = { buildRegister, registerAccount, buildAccount, buildLogin }
