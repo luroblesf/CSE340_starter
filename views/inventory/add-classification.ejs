@@ -1,0 +1,23 @@
+    <h1>
+        <%= title %>
+    </h1>
+
+    <% if (errors) { %>
+        <div class="notice">
+            <% errors.forEach(error=> { %>
+                <p>
+                    <%= error.msg %>
+                </p>
+                <% }) %>
+        </div>
+        <% } %>
+        <div class="form-container">
+            <p>FIELD ARE REQUIRED.</p>
+            <form action="/inventory/add-classification" method="POST" novalidate>
+                <label for="classification">Classification Name</label>
+                <p>NAME MUST BE ALPHABETIC CHARACTERS ONLY.</p>
+                <input type="text" id="classification" name="classification" required minlength="3" maxlength="100"
+                    value="<%= locals.classification || '' %>">
+                <button type="submit">Add Classification</button>
+            </form>
+        </div>

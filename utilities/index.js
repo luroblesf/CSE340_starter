@@ -1,6 +1,6 @@
-// utilities/index.js
 const invModel = require("../models/inventory-model")
 
+// Build the dynamic navigation menu
 async function getNav() {
   const categories = await invModel.getCategories()
   let nav = '<nav><ul>'
@@ -14,15 +14,14 @@ async function getNav() {
   return nav
 }
 
-
-// Funtion to handle errors in async functions
+// Error handling in async functions
 function handleErrors(fn) {
   return function (req, res, next) {
     Promise.resolve(fn(req, res, next)).catch(next)
   }
 }
 
-// Function to build vehicle detail HTML
+// Build the vehicle detail HTML
 function buildVehicleDetailHTML(vehicle) {
   return `
 <section class="vehicle-detail">
@@ -33,11 +32,11 @@ function buildVehicleDetailHTML(vehicle) {
        class="vehicle-img">
   <div class="vehicle-detail-text">
   <h2>${vehicle.inv_make} ${vehicle.inv_model} Details</h2>
-    <p><strong>Prize:</strong>
+    <p><strong>Price:</strong>
       ${Number(vehicle.inv_price).toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD"
-      })}
+    style: "currency",
+    currency: "USD"
+  })}
     </p>
     <p><strong>Description:</strong> ${vehicle.inv_description}</p>
     <p><strong>Color:</strong> ${vehicle.inv_color}</p>

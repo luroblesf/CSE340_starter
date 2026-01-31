@@ -1,11 +1,14 @@
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/inventory/Custom">Custom</a></li>
-        <li><a href="/inventory/Sedan">Sedan</a></li>
-        <li><a href="/inventory/Sport">Sport</a></li>
-        <li><a href="/inventory/SUV">SUV</a></li>
-        <li><a href="/inventory/Truck">Truck</a></li>
-        
+        <% classifications.forEach(category=> { %>
+            <li>
+                <a href="/inventory/<%= category.classification_name.toLowerCase() %>"
+                    title="See our <%= category.classification_name %> inventory">
+                    <%= category.classification_name %>
+                </a>
+            </li>
+            <% }) %>
+
     </ul>
 </nav>

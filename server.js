@@ -18,11 +18,11 @@ const errorHandler = require("./middleware/errorHandler");
 const path = require("path");
 const session = require("express-session");
 const pool = require("./database/database");
-const bodyParser = require("body-parser")
+
 
 /* ***********************
  * Middleware
- * ************************/
+ *************************/
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -34,8 +34,8 @@ app.use(session({
   name: 'sessionId',
 }))
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // Express Messages Middleware
 app.use(require('connect-flash')())
@@ -62,15 +62,29 @@ app.set("layout", "layouts/layout");
 app.use(express.static(path.join(__dirname, "public")));
 
 /* ***********************
+ * Global Middleware to load classifications
+ *************************/
+app.use(async (req, res, next) => {
+  try {
+    const classifications = await pool.query("SELECT * FROM classification ORDER BY classification_name");
+    res.locals.classifications = classifications.rows;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+/* ***********************
  * Routes
  *************************/
 // Inventory routes
 app.use("/inventory", inventoryRoute);
+app.use("/inv", inventoryRoute);
 
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
-//Account routes
+// Account routes
 app.use('/account', require('./routes/accountRoute'));
 
 // Error Routes (intencional 500)
@@ -81,8 +95,6 @@ app.use((req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
 
-
-
 /* ***********************
  * Express Error Handler
  *************************/
@@ -92,7 +104,6 @@ app.use(errorHandler);
  * Server Information
  *************************/
 const port = process.env.PORT || 5500;
-
 
 /* ***********************
  * Log statement to confirm server operation
