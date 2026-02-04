@@ -1,6 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
-const pool = require("../database/database") 
+const pool = require("../database/database")
 
 // Detail by vehicle ID
 async function buildById(req, res, next) {
@@ -18,7 +18,9 @@ async function buildById(req, res, next) {
         res.render("inventory/detail", {
             title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
             nav,
-            vehicleHTML
+            vehicleHTML,
+            errors: [],
+            success: []
         })
     } catch (error) {
         next(error)
@@ -36,7 +38,9 @@ async function buildByCategory(req, res, next) {
             return res.status(404).render("errors/404", {
                 title: "Not Found",
                 nav,
-                message: `No vehicles found in category: ${category}`
+                message: `No vehicles found in category: ${category}`,
+                errors: [],
+                success: []
             })
         }
 
@@ -44,7 +48,9 @@ async function buildByCategory(req, res, next) {
         res.render("inventory/classification", {
             title: `${category} Vehicles`,
             nav,
-            vehicles
+            vehicles,
+            errors: [],
+            success: []
         })
     } catch (error) {
         next(error)
@@ -55,16 +61,17 @@ async function buildByCategory(req, res, next) {
 async function buildManagement(req, res, next) {
     try {
         const nav = await utilities.getNav()
-        const successMessages = req.flash("success")
+        const classifications = await invModel.getCategories()
+        const classificationSelect = utilities.buildClassificationList(classifications)
 
-        const success = successMessages.length
-            ? [successMessages[successMessages.length - 1]]
-            : []
+        const success = req.flash("success")
+        const errors = req.flash("error")
 
         res.render("inventory/inventory_management", {
             title: "Vehicle Management",
             nav,
-            errors: null,
+            classificationSelect,
+            errors,
             success,
             locals: {}
         })
@@ -80,7 +87,8 @@ async function buildAddClassification(req, res, next) {
         res.render("inventory/add-classification", {
             title: "Add New Classification",
             nav,
-            errors: null,
+            errors: [],
+            success: [],
             locals: {}
         })
     } catch (error) {
@@ -99,6 +107,7 @@ async function addClassification(req, res, next) {
                 title: "Add New Classification",
                 nav,
                 errors: [{ msg: "Classification must be at least 3 characters long." }],
+                success: [],
                 locals: req.body
             })
         }
@@ -124,7 +133,7 @@ async function getClassifications(req, res, next) {
     }
 }
 
-// Process form to add vehicle
+// Process to add inventory
 async function addVehicle(req, res, next) {
     try {
         const {
@@ -135,8 +144,8 @@ async function addVehicle(req, res, next) {
             inv_price,
             inv_miles,
             inv_color,
-            inv_description, 
-            inv_image,     
+            inv_description,
+            inv_image,
             inv_thumbnail
         } = req.body
 
@@ -183,8 +192,8 @@ async function buildAddVehicle(req, res, next) {
             title: "Add New Vehicle",
             nav,
             classifications,
-            errors: null,
-            success: [],   
+            errors: [],
+            success: [],
             locals: {}
         })
     } catch (error) {
@@ -192,7 +201,109 @@ async function buildAddVehicle(req, res, next) {
     }
 }
 
+// Return Inventory by Classification As JSON
+async function getInventoryJSON(req, res, next) {
+    try {
+        const classification_id = parseInt(req.params.classification_id)
+        const invData = await invModel.getVehiclesByCategoryId(classification_id)
+
+        if (invData && invData[0] && invData[0].inv_id) {
+            return res.json(invData)
+        } else {
+            next(new Error("No data returned"))
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
+// Build edit inventory view
+async function editInventoryView(req, res, next) {
+    try {
+        const inv_id = parseInt(req.params.inv_id)
+        let nav = await utilities.getNav()
+
+        const itemData = await invModel.getVehicleById(inv_id)
+
+        const classifications = await invModel.getCategories()
+        const classificationSelect = await utilities.buildClassificationList(
+            classifications,
+            itemData.classification_id
+        )
+
+        const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+        const success = req.flash("success")
+        const errors = req.flash("error")
+
+        res.render("inventory/edit-inventory", {
+            title: "Edit " + itemName,
+            nav,
+            classificationSelect,
+            errors,
+            success,
+            inv_id: itemData.inv_id,
+            inv_make: itemData.inv_make,
+            inv_model: itemData.inv_model,
+            inv_year: itemData.inv_year,
+            inv_description: itemData.inv_description,
+            inv_image: itemData.inv_image,
+            inv_thumbnail: itemData.inv_thumbnail,
+            inv_price: itemData.inv_price,
+            inv_miles: itemData.inv_miles,
+            inv_color: itemData.inv_color,
+            classification_id: itemData.classification_id
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+// Process update inventory
+async function updateInventory(req, res, next) {
+    try {
+        const {
+            inv_id,
+            classification_id,
+            inv_make,
+            inv_model,
+            inv_year,
+            inv_description,
+            inv_image,
+            inv_thumbnail,
+            inv_price,
+            inv_miles,
+            inv_color
+        } = req.body
+
+        if (!inv_id || !inv_make || !inv_model || !inv_year) {
+            req.flash("error", "All required fields must be filled.")
+            return res.redirect(`/inv/edit/${inv_id}`)
+        }
+
+        await invModel.updateVehicle({
+            inv_id,
+            classification_id,
+            inv_make,
+            inv_model,
+            inv_year,
+            inv_description,
+            inv_image,
+            inv_thumbnail,
+            inv_price,
+            inv_miles,
+            inv_color
+        })
+
+        req.flash("success", `Vehicle ${inv_make} ${inv_model} updated successfully`)
+        res.redirect("/inventory")
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     buildById, buildByCategory, buildManagement, buildAddClassification, addClassification,
-    getClassifications, addVehicle, buildAddVehicle
+    getClassifications, addVehicle, buildAddVehicle, getInventoryJSON, editInventoryView,
+    updateInventory
 }

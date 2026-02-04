@@ -18,7 +18,7 @@ const errorHandler = require("./middleware/errorHandler");
 const path = require("path");
 const session = require("express-session");
 const pool = require("./database/database");
-
+const cookieParser = require('cookie-parser');
 
 /* ***********************
  * Middleware
@@ -36,6 +36,9 @@ app.use(session({
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+app.use(cookieParser())
+app.use(utilities.checkJWTToken);
 
 // Express Messages Middleware
 app.use(require('connect-flash')())

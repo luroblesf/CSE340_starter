@@ -1,4 +1,8 @@
+const { check } = require("express-validator")
 const invModel = require("../models/inventory-model")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
+const Util = {}
 
 // Build the dynamic navigation menu
 async function getNav() {
@@ -46,4 +50,55 @@ function buildVehicleDetailHTML(vehicle) {
   `;
 }
 
-module.exports = { getNav, handleErrors, buildVehicleDetailHTML }
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("Please log in")
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+        res.locals.accountData = accountData
+        res.locals.loggedin = 1
+        next()
+      })
+  } else {
+    next()
+  }
+}
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+}
+
+// Build the classification select list
+function buildClassificationList(classifications) {
+  let list = '<select name="classification_id" id="classification_id">'
+  list += '<option value="">Choose a Classification</option>'
+  classifications.forEach((classification) => {
+    list += `<option value="${classification.classification_id}">
+               ${classification.classification_name}
+             </option>`
+  })
+  list += '</select>'
+  return list
+}
+
+module.exports = {
+  getNav, handleErrors, buildVehicleDetailHTML, buildClassificationList, checkJWTToken: Util.checkJWTToken,
+  checkLogin: Util.checkLogin
+}

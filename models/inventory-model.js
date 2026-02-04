@@ -84,8 +84,54 @@ async function getVehiclesWithClassification() {
     return result.rows
 }
 
+async function getVehiclesByCategoryId(categoryId) {
+    const sql = `
+    SELECT i.*, c.classification_name
+    FROM inventory i
+    JOIN classification c ON i.classification_id = c.classification_id
+    WHERE c.classification_id = $1
+  `
+    const result = await pool.query(sql, [categoryId])
+    return result.rows
+}
+
+/* ***************************
+ *  Update Inventory Data
+ * ************************** */
+async function updateVehicle(vehicle) {
+    const sql = `
+    UPDATE inventory
+    SET classification_id = $2,
+        inv_make = $3,
+        inv_model = $4,
+        inv_year = $5,
+        inv_description = $6,
+        inv_image = $7,
+        inv_thumbnail = $8,
+        inv_price = $9,
+        inv_miles = $10,
+        inv_color = $11
+    WHERE inv_id = $1
+    RETURNING *
+  `
+    const data = await pool.query(sql, [
+        vehicle.inv_id,
+        vehicle.classification_id,
+        vehicle.inv_make,
+        vehicle.inv_model,
+        vehicle.inv_year,
+        vehicle.inv_description,
+        vehicle.inv_image,
+        vehicle.inv_thumbnail,
+        vehicle.inv_price,
+        vehicle.inv_miles,
+        vehicle.inv_color
+    ])
+    return data.rows[0]
+}
+
 
 module.exports = {
     getCategories, getVehiclesByCategory, getVehicleById, addClassification,
-    addVehicle, getVehiclesWithClassification
+    addVehicle, getVehiclesWithClassification, getVehiclesByCategoryId, updateVehicle
 }

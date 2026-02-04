@@ -1,5 +1,8 @@
 <h1>Welcome to CSE MOTORS!</h1>
-<%- messages() %>
+<% if (messages.error && messages.error.length) { %>
+  <p><%= messages.error[0] %></p>
+<% } %>
+
     <section class="hero">
         <div class="hero-grid">
             <h2>DMC Delorean</h2>

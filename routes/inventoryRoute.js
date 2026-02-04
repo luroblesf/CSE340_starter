@@ -1,6 +1,7 @@
 const express = require("express")
 const router = new express.Router()
 const invController = require("../controllers/invController")
+const utilities = require("../utilities/") 
 
 // Route for management
 router.get("/", invController.buildManagement)
@@ -14,13 +15,25 @@ router.post("/add-classification", invController.addClassification)
 // Route for inventory by ID
 router.get("/detail/:invId", invController.buildById)
 
-// Mostrar formulario para vehículo
+// Show form to add vehicle
 router.get("/add-vehicle", invController.buildAddVehicle)
 
-// Procesar formulario de vehículo
+// Process form for vehicle
 router.post("/add-vehicle", invController.addVehicle)
 
 // Route for classification by category 
 router.get("/:category", invController.buildByCategory)
+
+// New route: get inventory items by classification (JSON)
+router.get(
+    "/getInventory/:classification_id",
+    utilities.handleErrors(invController.getInventoryJSON))
+
+// Show form to edit vehicle (Edit Inventory)
+router.get("/edit/:inv_id", invController.editInventoryView)
+
+// Process form to update vehicle
+router.post("/update", invController.updateInventory)
+
 
 module.exports = router
