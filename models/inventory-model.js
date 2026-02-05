@@ -130,8 +130,18 @@ async function updateVehicle(vehicle) {
     return data.rows[0]
 }
 
+async function deleteInventoryItem(inv_id) {
+    try {
+        const sql = "DELETE FROM inventory WHERE inv_id = $1";
+        const data = await pool.query(sql, [inv_id]);
+        return data.rowCount; 
+    } catch (error) {
+        throw new Error("Delete Inventory Error: " + error.message);
+    }
+}
 
 module.exports = {
     getCategories, getVehiclesByCategory, getVehicleById, addClassification,
-    addVehicle, getVehiclesWithClassification, getVehiclesByCategoryId, updateVehicle
+    addVehicle, getVehiclesWithClassification, getVehiclesByCategoryId, updateVehicle,
+    deleteInventoryItem
 }

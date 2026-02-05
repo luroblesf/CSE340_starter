@@ -34,6 +34,11 @@ router.get("/edit/:inv_id", invController.editInventoryView)
 
 // Process form to update vehicle
 router.post("/update", invController.updateInventory)
-
+// Show form to delete vehicle
+router.get("/delete/:inv_id", invController.buildDeleteInventory)
+// Process form to delete vehicle
+router.get("/delete/:inv_id", invController.deleteInventory);
+// Delete vehicle
+router.post("/delete", invController.deleteInventory);
 
 module.exports = router
