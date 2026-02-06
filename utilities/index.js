@@ -60,12 +60,13 @@ Util.checkJWTToken = (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       function (err, accountData) {
         if (err) {
-          req.flash("Please log in")
+          req.flash("notice", "Please log in")
           res.clearCookie("jwt")
           return res.redirect("/account/login")
         }
-        res.locals.accountData = accountData
-        res.locals.loggedin = 1
+
+        req.session.accountData = accountData
+        req.session.loggedin = true
         next()
       })
   } else {
@@ -77,7 +78,7 @@ Util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+  if (req.session.loggedin) {
     next()
   } else {
     req.flash("notice", "Please log in.")
@@ -98,7 +99,34 @@ function buildClassificationList(classifications) {
   return list
 }
 
+// Middleware to add session data to res.locals
+function addSessionToLocals(req, res, next) {
+  res.locals.loggedin = req.session.loggedin || false
+  res.locals.accountData = req.session.accountData || null
+  next()
+}
+
+/* ****************************************
+ * Middleware verify account type
+ * ************************************ */
+function checkAccountType(req, res, next) {
+  const accountData = req.session.accountData
+
+  if (!accountData) {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+
+  if (req.session.accountData.account_type === "Employee" || req.session.accountData.account_type === "Admin") {
+    next()
+  } else {
+    req.flash("notice", "You do not have permission to access this area.")
+    return res.redirect("/account/myaccount")
+  }
+}
+
 module.exports = {
-  getNav, handleErrors, buildVehicleDetailHTML, buildClassificationList, checkJWTToken: Util.checkJWTToken,
-  checkLogin: Util.checkLogin
+  getNav, handleErrors, buildVehicleDetailHTML, buildClassificationList,
+  checkJWTToken: Util.checkJWTToken, checkLogin: Util.checkLogin, addSessionToLocals,
+  checkAccountType
 }

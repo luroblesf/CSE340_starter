@@ -35,4 +35,23 @@ router.post(
   utilities.handleErrors(accountController.loginAccount)
 )
 
-module.exports = router;
+// Process logout request
+router.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) console.error(err)
+    res.clearCookie("jwt")
+    res.redirect("/")
+  })
+})
+
+
+// Show edit account view
+router.get("/edit", utilities.checkLogin, accountController.buildEditAccount)
+
+// Proccess account update request
+router.post("/update", utilities.checkLogin, accountController.updateAccount)
+
+// Process password change request
+router.post("/change-password", utilities.checkLogin, accountController.changePassword)
+
+module.exports = router

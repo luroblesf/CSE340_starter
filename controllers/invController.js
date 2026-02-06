@@ -301,7 +301,8 @@ async function updateInventory(req, res, next) {
         next(error)
     }
 }
-// Mostrar formulario de confirmación
+
+// Show form to delete vehicle
 async function buildDeleteInventory(req, res, next) {
     try {
         const inv_id = parseInt(req.params.inv_id);

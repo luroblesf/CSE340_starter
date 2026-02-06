@@ -17,3 +17,12 @@
                 <li><a href="/account/edit">Edit Account Information</a></li>
             </ul>
         </section>
+
+        <% if (accountData.account_type !=='Client' ) { %>
+            <section class="inventory-management">
+                <h2>Inventory Management</h2>
+                <ul>
+                    <li><a href="/inv">Manage Inventory</a></li>
+                </ul>
+            </section>
+            <% } %>

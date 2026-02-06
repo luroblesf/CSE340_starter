@@ -78,6 +78,11 @@ app.use(async (req, res, next) => {
 });
 
 /* ***********************
+ * 🔑 Middleware para exponer sesión a las vistas
+ *************************/
+app.use(utilities.addSessionToLocals)
+
+/* ***********************
  * Routes
  *************************/
 // Inventory routes
