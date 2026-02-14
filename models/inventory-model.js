@@ -140,8 +140,16 @@ async function deleteInventoryItem(inv_id) {
     }
 }
 
+// Check if vehicle is in sales
+async function isVehicleInSales(inventory_id) {
+    const sql = "SELECT 1 FROM sales WHERE inventory_id = $1 LIMIT 1";
+    const result = await pool.query(sql, [inventory_id]);
+    return result.rowCount > 0; 
+}
+
+
 module.exports = {
     getCategories, getVehiclesByCategory, getVehicleById, addClassification,
     addVehicle, getVehiclesWithClassification, getVehiclesByCategoryId, updateVehicle,
-    deleteInventoryItem
+    deleteInventoryItem, isVehicleInSales
 }

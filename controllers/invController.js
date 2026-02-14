@@ -5,25 +5,36 @@ const pool = require("../database/database")
 // Detail by vehicle ID
 async function buildById(req, res, next) {
     try {
-        const invId = req.params.invId
-        const vehicleData = await invModel.getVehicleById(invId)
+        const invId = req.params.invId;
+        const vehicleData = await invModel.getVehicleById(invId);
 
         if (!vehicleData) {
-            return res.status(404).send("Vehicle not found")
+            return res.status(404).send("Vehicle not found");
         }
 
-        const nav = await utilities.getNav()
-        const vehicleHTML = utilities.buildVehicleDetailHTML(vehicleData)
+        const nav = await utilities.getNav();
+        const vehicleHTML = utilities.buildVehicleDetailHTML(vehicleData);
+
+        // Verificar si está en ventas
+        const inSales = await invModel.isVehicleInSales(invId);
+        if (inSales) {
+            req.flash("notice", "⚠️ This vehicle is already registered as sold");
+        }
+
+        const errors = req.flash("error");
+        const success = req.flash("success");
+        const notice = req.flash("notice");
 
         res.render("inventory/detail", {
             title: `${vehicleData.inv_make} ${vehicleData.inv_model}`,
             nav,
             vehicleHTML,
-            errors: [],
-            success: []
-        })
+            errors,
+            success,
+            notice
+        });
     } catch (error) {
-        next(error)
+        next(error);
     }
 }
 
@@ -377,6 +388,9 @@ async function buildDeleteInventory(req, res, next) {
         next(error);
     }
 }
+
+
+
 
 module.exports = {
     buildById, buildByCategory, buildManagement, buildAddClassification, addClassification,
