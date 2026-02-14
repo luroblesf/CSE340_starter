@@ -1,0 +1,64 @@
+<h1>
+    <%= title %>
+</h1>
+
+<% if (messages && messages.length) { %>
+    <% messages.forEach(msg=> { %>
+        <div class="flash-message">
+            <%= msg %>
+        </div>
+        <% }) %>
+            <% } %>
+
+
+<div class="login-container">
+
+<form action="/sales/purchase" method="POST">
+
+    <label for="classification_id">Classification</label>
+    <select id="classification_id" name="classification_id" required onchange="filterVehicles()">
+        <option value="" disabled selected>Select a classification</option>
+        <% classifications.forEach(c=> { %>
+            <option value="<%= c.classification_id %>">
+                <%= c.classification_name %>
+            </option>
+            <% }) %>
+    </select>
+
+    <label for="inventory_id">Vehicle</label>
+    <select id="inventory_id" name="inventory_id" required onchange="updatePrice()">
+        <option value="" disabled selected>Select a vehicle</option>
+        <% inventory.forEach(v=> { %>
+            <option value="<%= v.inv_id %>" data-class="<%= v.classification_id %>"
+                data-price="<%= v.inv_price %>">
+                <%= v.inv_make %>
+                    <%= v.inv_model %>
+            </option>
+            <% }) %>
+    </select>
+
+
+    <label for="sale_date">Date</label>
+    <input type="date" id="sale_date" name="sale_date" required>
+    
+
+    <label for="sale_price">Price</label>
+    <input type="text" id="sale_price" name="sale_price" readonly>
+    
+    <label for="payment_method">Payment Method</label>
+    <select id="payment_method" name="payment_method" required>
+        <option value="" disabled selected>Select a payment method</option>
+        <option value="Cash">Cash</option>
+        <option value="Credit Card">Credit Card</option>
+        <option value="Debit Card">Debit Card</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+    </select>
+    
+    <label for="notes">Notes</label>
+    <textarea id="notes" name="notes" rows="4" cols="40"></textarea>
+    
+    <button type="submit">Buy</button>
+</form>
+</div>
+    
+<script src="/js/purchase.js"></script>

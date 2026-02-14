@@ -43,8 +43,7 @@ router.get('/logout', (req, res) => {
     res.redirect("/")
   })
 })
-
-
+ 
 // Show edit account view
 router.get("/edit", utilities.checkLogin, accountController.buildEditAccount)
 
@@ -53,5 +52,16 @@ router.post("/update", utilities.checkLogin, accountController.updateAccount)
 
 // Process password change request
 router.post("/change-password", utilities.checkLogin, accountController.changePassword)
+
+// Account Management flash message route
+router.get("/management", utilities.checkLogin, async (req, res) => {
+  const nav = await utilities.getNav();
+  res.render("account/myaccount", {   
+    title: "Account Management",
+    nav,
+    accountData: req.session.accountData, 
+    messages: [].concat(req.flash("notice"))
+  });
+});
 
 module.exports = router

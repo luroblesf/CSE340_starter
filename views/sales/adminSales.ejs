@@ -1,0 +1,66 @@
+    <h1>
+        <%= title %>
+    </h1>
+
+    <div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Sale ID</th>
+                <th>Account</th>
+                <th>Inventory</th>
+                <th>Classification</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Payment Method</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (sales && sales.length> 0) { %>
+                <% sales.forEach(sale=> { %>
+                    <tr>
+                        <td>
+                            <%= sale.sale_id %>
+                            <td>
+                                <%= sale.account_firstname %>
+                                <%= sale.account_lastname %>
+                                <td>
+                                    <%= sale.inv_make %>
+                                    <%= sale.inv_model %>
+                                </td>
+                                <td>
+                                    <%= sale.classification_name %>
+                                </td>
+                                <td>
+                                    <%= sale.sale_date.toISOString().split("T")[0] %>
+                                </td>
+                                <td>$<%= sale.sale_price %>
+                                </td>
+                                <td>
+                                    <%= sale.payment_method %>
+                                </td>
+                                <td>
+                                    <%= sale.notes %>
+                                </td>
+                            </td>
+                    </tr>
+                    <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="8">No sales found</td>
+                            </tr>
+                            <% } %>
+        </tbody>
+    </table>
+    </div>
+
+    <% if (messages && messages.length> 0) { %>
+        <div class="messages">
+            <% messages.forEach(msg=> { %>
+                <p>
+                    <%= msg %>
+                </p>
+                <% }) %>
+        </div>
+        <% } %>

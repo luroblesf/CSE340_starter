@@ -19,6 +19,8 @@ const path = require("path");
 const session = require("express-session");
 const pool = require("./database/database");
 const cookieParser = require('cookie-parser');
+const salesRoute = require("./routes/salesRoute");
+
 
 /* ***********************
  * Middleware
@@ -82,6 +84,7 @@ app.use(async (req, res, next) => {
  *************************/
 app.use(utilities.addSessionToLocals)
 
+
 /* ***********************
  * Routes
  *************************/
@@ -95,6 +98,10 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 // Account routes
 app.use('/account', require('./routes/accountRoute'));
 
+// Sales routes
+app.use("/sales", salesRoute);
+
+
 // Error Routes (intencional 500)
 app.use("/error", errorRoutes);
 
@@ -102,6 +109,7 @@ app.use("/error", errorRoutes);
 app.use((req, res, next) => {
   next({ status: 404, message: "Sorry, we appear to have lost that page." });
 });
+
 
 /* ***********************
  * Express Error Handler

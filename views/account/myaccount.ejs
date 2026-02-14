@@ -10,19 +10,38 @@
         <% }) %>
             <% } %>
 
-        <section class="account-management">
-            <h2>Welcome <%= accountData.account_firstname %>!</h2>
-            <p>You're logged in</p>
-            <ul>
-                <li><a href="/account/edit">Edit Account Information</a></li>
-            </ul>
-        </section>
+                <section class="account-management">
+                    <h2>Welcome <%= accountData.account_firstname %>!</h2>
+                    <p>You're logged in</p>
+                    <ul>
+                        <li><a href="/account/edit">Edit Account Information</a></li>
+                    </ul>
+                </section>
 
-        <% if (accountData.account_type !=='Client' ) { %>
-            <section class="inventory-management">
-                <h2>Inventory Management</h2>
-                <ul>
-                    <li><a href="/inv">Manage Inventory</a></li>
-                </ul>
-            </section>
-            <% } %>
+                <% if (accountData.account_type !=='Client' ) { %>
+                    <section class="inventory-management">
+                        <h2>Inventory Management</h2>
+                        <ul>
+                            <li><a href="/inv">Manage Inventory</a></li>
+                        </ul>
+                    </section>
+                    <% } %>
+
+                    <% if (accountData.account_type==='Client' ) { %>
+                        <section class="sales-management">
+                            <h2>My Purchases</h2>
+                            <ul>
+                                <li><a href="/sales/userSales">View My Purchases</a></li><br>
+                                <li><a href="/sales/purchase">Make a Purchase</a></li>
+                            </ul>
+                        </section>
+                        <% } %>
+                                            
+                            <% if (accountData.account_type!=='Client') { %>
+                                <section class="sales-management">
+                                    <h2>Sales Management</h2>
+                                    <ul>
+                                        <li><a href="/sales/admin">View All Sales</a></li>
+                                    </ul>
+                                </section>
+                                <% } %>

@@ -1,0 +1,41 @@
+<h1>salesModel List</h1>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Account</th>
+            <th>Inventory</th>
+            <th>Classification</th>
+            <th>Date</th>
+            <th>Price</th>
+            <th>Payment Method</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% salesModel.forEach(sale=> { %>
+            <tr>
+                <td>
+                    <%= sale.sale_id %>
+                </td>
+                <td>
+                    <%= sale.account_id %>
+                </td>
+                <td>
+                    <%= sale.inventory_id %>
+                </td>
+                <td>
+                    <%= sale.classification_id %>
+                </td>
+                <td>
+                    <%= sale.sale_date %>
+                </td>
+                <td>
+                    <%= sale.sale_price %>
+                </td>
+                <td>
+                    <%= sale.payment_method %>
+                </td>
+            </tr>
+            <% }) %>
+    </tbody>
+</table>
